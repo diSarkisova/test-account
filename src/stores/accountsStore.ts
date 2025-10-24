@@ -2,15 +2,10 @@ import { defineStore } from "pinia";
 import { computed, reactive, ref } from "vue";
 
 export const useAccountsStore = defineStore("accountStore", () => {
-  let nextId = 1;
+  const nextId = ref(1);
 
   const formData = reactive({
-    id: nextId++,
-    tags: "",
-    type: "",
-    login: "",
-    password: "",
-    showPassword: false,
+    infos: [],
   });
 
   const headers = computed(() => [
@@ -21,13 +16,30 @@ export const useAccountsStore = defineStore("accountStore", () => {
     { title: "Действия", key: "actions", width: "5%", sortable: false },
   ]);
 
-  function onUpdateRowValue(newValue, field) {
-    formData[field] = newValue;
+  function onUpdateRowValue(newValue: any, field: string, item: any) {
+    if (!item) return;
+    (item as any)[field] = newValue;
+  }
+
+  function onAddRow(): void {
+    formData.infos.unshift(getEmptyRow());
+  }
+
+  function getEmptyRow() {
+    return {
+      id: nextId.value++,
+      tags: "",
+      type: "",
+      login: "",
+      password: "",
+      showPassword: false,
+    };
   }
 
   return {
     formData,
     headers,
     onUpdateRowValue,
+    onAddRow,
   };
 });

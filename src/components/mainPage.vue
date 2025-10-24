@@ -11,7 +11,7 @@
           </v-col>
           <v-spacer />
           <v-col cols="auto">
-            <v-btn icon>
+            <v-btn icon @click="onAddRow">
               <v-icon>mdi-plus</v-icon>
             </v-btn>
           </v-col>
@@ -22,8 +22,11 @@
           разделитель ;
         </v-alert>
 
-        <!-- Передаем formData как массив из одного элемента -->
-        <ui-table :headers="headers" :items="[formData]" class="accounts-table">
+        <ui-table
+          :headers="headers"
+          :items="formData.infos"
+          class="accounts-table"
+        >
           <!-- Слот для меток -->
           <template #[`item.tags`]="{ item }">
             <v-text-field
@@ -31,7 +34,7 @@
               placeholder="XXX; YYYYY; ..."
               dense
               hide-details
-              @update:model-value="onUpdateRowValue($event, 'tags')"
+              @update:model-value="onUpdateRowValue($event, 'tags', item)"
             />
           </template>
 
@@ -42,7 +45,7 @@
               :items="typeOptions"
               dense
               hide-details
-              @update:model-value="onUpdateRowValue($event, 'type')"
+              @update:model-value="onUpdateRowValue($event, 'type', item)"
             />
           </template>
 
@@ -52,7 +55,7 @@
               :model-value="item.login"
               dense
               hide-details
-              @update:model-value="onUpdateRowValue($event, 'login')"
+              @update:model-value="onUpdateRowValue($event, 'login', item)"
             />
           </template>
 
@@ -65,7 +68,7 @@
               hide-details
               :append-inner-icon="item.showPassword ? 'mdi-eye-off' : 'mdi-eye'"
               @click:append-inner="item.showPassword = !item.showPassword"
-              @update:model-value="onUpdateRowValue($event, 'password')"
+              @update:model-value="onUpdateRowValue($event, 'password', item)"
             />
           </template>
 
@@ -88,7 +91,7 @@ import { computed } from "vue";
 
 const accountsStore = useAccountsStore();
 const { formData, headers } = storeToRefs(accountsStore);
-const { onUpdateRowValue } = accountsStore;
+const { onUpdateRowValue, onAddRow } = accountsStore;
 
 const typeOptions = ["Локальная", "LDAP"];
 </script>
