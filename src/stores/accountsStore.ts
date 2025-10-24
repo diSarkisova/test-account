@@ -1,29 +1,33 @@
-import { defineStore } from 'pinia'
-import { ref } from 'vue'
+import { defineStore } from "pinia";
+import { computed, reactive, ref } from "vue";
 
-export const useAccountsStore = defineStore('accountStore',()=> {
+export const useAccountsStore = defineStore("accountStore", () => {
+  let nextId = 1;
 
-const accounts = ref([
-    {
-id: 1,
-      title: 'Documentation',
-    },
-    {
-id: 2,
-      title: 'Features',
-    },
-    {
-id: 3,
-      title: 'Components',
-    },
-    {
-id: 4,
-      title: 'Community',
-    },
-  ])
- 
+  const formData = reactive({
+    id: nextId++,
+    tags: "",
+    type: "",
+    login: "",
+    password: "",
+    showPassword: false,
+  });
 
+  const headers = computed(() => [
+    { title: "Метки", key: "tags", width: "30%" },
+    { title: "Тип записи", key: "type", width: "20%" },
+    { title: "Логин", key: "login", width: "25%" },
+    { title: "Пароль", key: "password", width: "20%" },
+    { title: "Действия", key: "actions", width: "5%", sortable: false },
+  ]);
 
-return {accounts}
-    
-})
+  function onUpdateRowValue(newValue, field) {
+    formData[field] = newValue;
+  }
+
+  return {
+    formData,
+    headers,
+    onUpdateRowValue,
+  };
+});

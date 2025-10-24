@@ -14,5 +14,6 @@ declare module 'vue' {
     AccountsForm: typeof import('./src/components/accountsForm/accountsForm.vue')['default']
     HelloWorld: typeof import('./src/components/HelloWorld.vue')['default']
     MainPage: typeof import('./src/components/mainPage.vue')['default']
+    UiTable: typeof import('./src/components/uiTable.vue')['default']
   }
 }
